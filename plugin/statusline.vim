@@ -23,11 +23,11 @@ if has('statusline')
   set statusline+=%5.5n\                       " buffer number
   if (strlen(s:GitBranch)>0)
     set statusline+=%#StatusLineGitInfo#
-    set statusline+=(
+    set statusline+=⑆
     set statusline+=%#StatusLineGitBranch#
     set statusline+=%{Git()}
     set statusline+=%#StatusLineGitInfo#
-    set statusline+=)\                         " set Git branch
+    set statusline+= \                         " set Git branch
   endif
   set statusline+=%#StatusLineFileName#        " set highlighting
   set statusline+=%t\                          " file name
