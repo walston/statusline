@@ -7,8 +7,9 @@ hi StatusLineGitInfo ctermbg=232 ctermfg=5
 hi StatusLineGitBranch ctermbg=232 ctermfg=1 cterm=bold
 hi ColorColumn ctermbg=234 ctermfg=none
 
-function! Git() " Gets the git branch name for statusline
-  let l:folder=expand('%:p:h')
+function! GitBranch() " Gets the git branch name for statusline
+  let l:file=expand( system('readlink -f ' . expand('%:p') ) )
+  let l:folder=fnamemodify(l:file, ':h')
   let l:branch=system('git -C '.l:folder.' rev-parse --abbrev-ref HEAD')
   if (match(l:branch,'^fatal:',) < 0)
     return substitute(l:branch,'\n','','')
@@ -18,14 +19,13 @@ function! Git() " Gets the git branch name for statusline
 endfunction
 
 if has('statusline')
-  let s:GitBranch=Git()
   set statusline=%#StatusLineBufferNumber#     " set highlighting
-  set statusline+=%5.5n\                       " buffer number
-  if (strlen(s:GitBranch)>0)
+  set statusline+=%3.3n\                       " buffer number
+  if (strlen( GitBranch() )>0)
     set statusline+=%#StatusLineGitInfo#
     set statusline+=⑆(
     set statusline+=%#StatusLineGitBranch#
-    set statusline+=%{Git()}
+    set statusline+=%{GitBranch()}
     set statusline+=%#StatusLineGitInfo#
     set statusline+=)\                         " set Git branch
   endif
